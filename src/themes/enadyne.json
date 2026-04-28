@@ -1,0 +1,23 @@
+{
+  "name": "enadyne",
+  "title": "enaDyne Assistant",
+  "description": "Default brand theme — Carbon text, Brand Teal accents, light surface.",
+  "tokens": {
+    "--ena-bg": "#ffffff",
+    "--ena-surface": "#E8EEF2",
+    "--ena-text": "#2A2E32",
+    "--ena-text-muted": "#808080",
+    "--ena-primary": "#019875",
+    "--ena-accent": "#1EE280",
+    "--ena-bubble-user-bg": "#019875",
+    "--ena-bubble-user-text": "#ffffff",
+    "--ena-bubble-bot-bg": "#E8EEF2",
+    "--ena-bubble-bot-text": "#2A2E32",
+    "--ena-border-color": "#E8EEF2",
+    "--ena-border-width": "1px",
+    "--ena-border-radius": "16px",
+    "--ena-launcher-bg": "#019875",
+    "--ena-launcher-icon": "#ffffff",
+    "--ena-shadow": "0 16px 48px rgba(1, 152, 117, 0.25)"
+  }
+}

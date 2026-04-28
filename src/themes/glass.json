@@ -1,0 +1,24 @@
+{
+  "name": "glass",
+  "title": "Assistant",
+  "description": "Glassmorphism — translucent surface with backdrop blur. Best on rich page backgrounds.",
+  "tokens": {
+    "--ena-bg": "rgba(255, 255, 255, 0.55)",
+    "--ena-surface": "rgba(255, 255, 255, 0.35)",
+    "--ena-backdrop": "blur(18px) saturate(140%)",
+    "--ena-text": "#1a1d21",
+    "--ena-text-muted": "#5a6470",
+    "--ena-primary": "#019875",
+    "--ena-accent": "#1EE280",
+    "--ena-bubble-user-bg": "rgba(1, 152, 117, 0.92)",
+    "--ena-bubble-user-text": "#ffffff",
+    "--ena-bubble-bot-bg": "rgba(255, 255, 255, 0.7)",
+    "--ena-bubble-bot-text": "#1a1d21",
+    "--ena-border-color": "rgba(255, 255, 255, 0.4)",
+    "--ena-border-width": "1px",
+    "--ena-border-radius": "20px",
+    "--ena-launcher-bg": "rgba(1, 152, 117, 0.92)",
+    "--ena-launcher-icon": "#ffffff",
+    "--ena-shadow": "0 20px 60px rgba(20, 30, 40, 0.25)"
+  }
+}

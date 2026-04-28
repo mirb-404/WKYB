@@ -1,0 +1,22 @@
+{
+  "name": "dark",
+  "title": "Assistant",
+  "description": "Low-light theme with Brand Neon Green accents on near-black surfaces.",
+  "tokens": {
+    "--ena-bg": "#1a1d21",
+    "--ena-surface": "#22262b",
+    "--ena-text": "#e8eef2",
+    "--ena-text-muted": "#8a939c",
+    "--ena-primary": "#1EE280",
+    "--ena-accent": "#019875",
+    "--ena-bubble-user-bg": "#1EE280",
+    "--ena-bubble-user-text": "#0d0d0d",
+    "--ena-bubble-bot-bg": "#2c3035",
+    "--ena-bubble-bot-text": "#e8eef2",
+    "--ena-border-color": "#2c3035",
+    "--ena-border-radius": "16px",
+    "--ena-launcher-bg": "#1EE280",
+    "--ena-launcher-icon": "#0d0d0d",
+    "--ena-shadow": "0 20px 60px rgba(0, 0, 0, 0.5)"
+  }
+}
