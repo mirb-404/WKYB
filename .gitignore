@@ -65,6 +65,9 @@ desktop.ini
 *.log
 logs/
 
+# ─── Scraped HTML output ───────────────────────────────────────────
+scraped/
+
 # ─── Node (in case you ever bundle the JS) ─────────────────────────
 node_modules/
 npm-debug.log*

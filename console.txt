@@ -1,0 +1,10 @@
+const s = document.createElement('script');
+s.type = 'module';
+s.src = 'https://wkyb-production.up.railway.app/src/ui/chat-element.js';
+document.body.appendChild(s);
+
+const c = document.createElement('ena-chat');
+c.setAttribute('customer', 'acme-dental');
+c.setAttribute('base-url', 'http://localhost:1234/v1');
+c.setAttribute('model', 'qwen/qwen3-4b-2507');
+document.body.appendChild(c);
