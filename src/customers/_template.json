@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "slug": "TODO-lowercase-kebab-case-slug",
+
+  "business": {
+    "name": "TODO Business Name",
+    "type": "TODO short business type, e.g. dental practice",
+    "address": "TODO street, postcode city, country",
+    "phone": "TODO +49 ...",
+    "email": "TODO hello@business.de",
+    "website": "TODO https://business.de",
+    "hours": {
+      "monday":    "TODO 08:00–18:00 or 'closed'",
+      "tuesday":   "TODO",
+      "wednesday": "TODO",
+      "thursday":  "TODO",
+      "friday":    "TODO",
+      "saturday":  "TODO",
+      "sunday":    "TODO"
+    },
+    "languages_spoken": ["TODO German", "TODO English"],
+    "emergency_line": "TODO optional, only for medical/legal/plumbing/etc."
+  },
+
+  "header": {
+    "title": "TODO Bot title shown in panel header",
+    "avatar_text": "TODO single letter, e.g. 'A'",
+    "greeting": "TODO First-message empty state, 1–2 sentences."
+  },
+
+  "tone": "TODO Specific voice description. Not 'friendly and professional' — be concrete. Example: 'warm, brief, reassures nervous patients in plain German.'",
+
+  "services": [
+    {
+      "name": "TODO Service name",
+      "price": "TODO €XX or 'from €XX'",
+      "duration": "TODO optional, e.g. '45 min'",
+      "notes": "TODO optional caveat"
+    }
+  ],
+
+  "faq": [
+    {
+      "q": "TODO Common customer question",
+      "a": "TODO Approved answer the bot may adapt to user phrasing."
+    }
+  ],
+
+  "guardrails": [
+    "TODO Hard 'never' rule, e.g. 'Never give medical advice.'",
+    "TODO Redirect rule, e.g. 'If user describes severe pain, redirect to emergency line.'"
+  ],
+
+  "lead_capture": {
+    "trigger_intents": ["TODO book", "TODO appointment", "TODO callback"],
+    "fields": [
+      { "key": "name",  "label": "Your name",   "required": true },
+      { "key": "phone", "label": "Phone number", "required": true }
+    ],
+    "webhook_url": "TODO https://hooks.zapier.com/... (not yet wired in widget code; see prompt-builder for current behavior)",
+    "confirmation_message": "TODO Final message after lead is captured."
+  },
+
+  "theme": {
+    "tokens": {
+      "--ena-bg":               "#FFFFFF",
+      "--ena-surface":          "TODO #F0F9FF or similar",
+      "--ena-text":             "#0F172A",
+      "--ena-text-muted":       "#64748B",
+
+      "--ena-primary":          "TODO client primary brand color",
+      "--ena-primary-contrast": "#FFFFFF",
+      "--ena-accent":           "TODO secondary accent",
+
+      "--ena-bubble-user-bg":   "TODO usually same as --ena-primary",
+      "--ena-bubble-user-text": "#FFFFFF",
+      "--ena-bubble-bot-bg":    "TODO usually same as --ena-surface",
+      "--ena-bubble-bot-text":  "TODO usually same as --ena-text",
+
+      "--ena-border-color":     "TODO subtle border, e.g. #BAE6FD",
+      "--ena-border-width":     "1px",
+      "--ena-border-radius":    "16px",
+      "--ena-bubble-radius":    "14px",
+
+      "--ena-launcher-bg":      "TODO usually same as --ena-primary",
+      "--ena-launcher-icon":    "#FFFFFF",
+      "--ena-shadow":           "0 16px 48px rgba(0, 0, 0, 0.15)",
+
+      "--ena-font":             "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      "--ena-font-size":        "14px"
+    }
+  },
+
+  "llm": {
+    "temperature": 0.4,
+    "max_tokens": 600
+  }
+}

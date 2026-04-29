@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "slug": "nordlicht-sanitaer",
+
+  "business": {
+    "name": "Nordlicht Sanitär",
+    "type": "plumbing and heating company",
+    "address": "Eppendorfer Weg 178, 20253 Hamburg, Germany",
+    "phone": "+49 40 555-0177",
+    "email": "buero@nordlicht-sanitaer.de",
+    "website": "https://nordlicht-sanitaer.de",
+    "hours": {
+      "monday":    "07:00–17:00",
+      "tuesday":   "07:00–17:00",
+      "wednesday": "07:00–17:00",
+      "thursday":  "07:00–17:00",
+      "friday":    "07:00–14:00",
+      "saturday":  "Notdienst nur über Hotline",
+      "sunday":    "Notdienst nur über Hotline"
+    },
+    "languages_spoken": ["German", "English", "Polish"],
+    "emergency_line": "+49 40 555-0100"
+  },
+
+  "header": {
+    "title": "Nordlicht Assistant",
+    "avatar_text": "N",
+    "greeting": "Moin! Ich beantworte gerne Fragen zu unseren Leistungen, Preisen und Terminen — oder ich nehme Ihre Anfrage für einen Rückruf auf. Womit kann ich helfen?"
+  },
+
+  "tone": "praktisch, geradeaus, beruhigend bei Notfällen. Keine Werbesprache, keine Versprechen über exakte Anfahrtszeiten. Norddeutsch sachlich, aber nicht kalt.",
+
+  "services": [
+    { "name": "Notdienst-Anfahrt (24/7)",            "price": "€150",           "duration": "Anfahrt + 30 min", "notes": "Nachts und am Wochenende Aufschlag" },
+    { "name": "Stundensatz Werkstatt",                "price": "€85/Stunde",     "duration": "ab 30 min" },
+    { "name": "Verstopfung beheben (Abfluss / WC)",   "price": "ab €150",        "duration": "30–90 min" },
+    { "name": "Wasserhahn / Mischbatterie wechseln",  "price": "ab €130",        "duration": "30–60 min", "notes": "Material gesondert berechnet" },
+    { "name": "Toilettenspülung reparieren",          "price": "ab €110",        "duration": "30–60 min" },
+    { "name": "WC-Spülkasten komplett tauschen",      "price": "ab €280",        "duration": "60–90 min" },
+    { "name": "Warmwasserboiler installieren",        "price": "ab €480",        "duration": "2–4 Stunden", "notes": "Gerät separat" },
+    { "name": "Heizungswartung jährlich",             "price": "€135",           "duration": "60 min", "notes": "inkl. Protokoll für Vermieter" },
+    { "name": "Rohrbruch lokalisieren und reparieren", "price": "ab €220",       "duration": "1–4 Stunden" },
+    { "name": "Badezimmer-Sanierung",                 "price": "individuelles Angebot", "duration": "mehrere Tage", "notes": "kostenlose Vor-Ort-Beratung" }
+  ],
+
+  "faq": [
+    {
+      "q": "Kommen Sie auch nachts oder am Wochenende?",
+      "a": "Ja, wir haben einen 24/7-Notdienst über die Hotline +49 40 555-0100. An Werktagen versuchen wir innerhalb von 60–90 Minuten vor Ort zu sein, am Wochenende und nachts kann es länger dauern. Bei Wasserschaden mit laufendem Wasser bitte zuerst den Haupthahn schließen."
+    },
+    {
+      "q": "Was kostet eine Anfahrt?",
+      "a": "Im Stadtgebiet Hamburg pauschal €150 für den Notdienst. Innerhalb der regulären Geschäftszeiten ist die Anfahrt im Stundensatz enthalten, sofern der Auftrag mindestens 60 Minuten dauert."
+    },
+    {
+      "q": "Welche Stadtteile bedienen Sie?",
+      "a": "Wir arbeiten in ganz Hamburg innerhalb des Rings, plus Eppendorf, Eimsbüttel, Altona, Winterhude, Uhlenhorst und Barmbek. Für Fahrten außerhalb berechnen wir eine kleine Anfahrtspauschale — die teilt der Kollege am Telefon mit."
+    },
+    {
+      "q": "Sind Sie ein Meisterbetrieb?",
+      "a": "Ja. Wir sind eingetragener Meisterbetrieb der Handwerkskammer Hamburg, eingetragen seit 1998. Mitglied der Innung Sanitär-Heizung-Klima Hamburg."
+    },
+    {
+      "q": "Akzeptieren Sie Versicherungsaufträge?",
+      "a": "Wir arbeiten regelmäßig mit Hausrat- und Wohngebäudeversicherungen zusammen und erstellen Kostenvoranschläge in deren Format. Bitte halten Sie Ihre Schadennummer bereit, wenn Sie anrufen."
+    },
+    {
+      "q": "Bieten Sie Festpreise an?",
+      "a": "Bei klar abgrenzbaren Arbeiten (z. B. Wasserhahn tauschen, Spülkasten ersetzen) ja. Bei Reparaturen mit unbekanntem Aufwand (z. B. versteckter Rohrbruch) arbeiten wir nach Stundensatz und melden frühzeitig, wenn die Arbeit länger dauert als ursprünglich geschätzt."
+    },
+    {
+      "q": "Kann ich einen Kostenvoranschlag bekommen?",
+      "a": "Für größere Arbeiten wie Bad-Sanierung oder Heizungstausch ja, kostenlos und unverbindlich. Wir kommen vorbei, schauen uns die Situation an und schicken Ihnen das schriftliche Angebot innerhalb von 3 Werktagen."
+    },
+    {
+      "q": "Welche Zahlungsarten?",
+      "a": "Rechnung per Überweisung (14 Tage Zahlungsziel), EC-Karte vor Ort, Bargeld. Auf Wunsch auch Ratenzahlung bei Rechnungen über €1.000 — sprechen Sie uns einfach an."
+    },
+    {
+      "q": "Reparieren Sie auch [Markenname]-Geräte?",
+      "a": "Wir arbeiten herstellerunabhängig und reparieren die meisten gängigen Marken (Grohe, Hansa, Hansgrohe, Geberit, Vaillant, Viessmann, Buderus). Bei sehr neuen oder exotischen Geräten klären wir kurz die Ersatzteilverfügbarkeit, bevor wir kommen."
+    },
+    {
+      "q": "Mein Wasser läuft heraus — was soll ich jetzt tun?",
+      "a": "Sofort: Haupthahn zudrehen (meist im Keller oder unter der Spüle). Stromkreise im betroffenen Raum ausschalten, falls Wasser an Steckdosen läuft. Dann unsere Notfall-Hotline +49 40 555-0100 anrufen — wir koordinieren den nächstmöglichen Einsatz."
+    }
+  ],
+
+  "guardrails": [
+    "Niemals technische Anleitungen für Gas-, Heizungs- oder Starkstromarbeiten geben. Immer auf einen Fachmann verweisen.",
+    "Niemals Festpreise nennen, die nicht in der Service-Liste stehen. Für individuelle Arbeiten einen kostenlosen Vor-Ort-Termin anbieten.",
+    "Bei Wasserschaden mit laufendem Wasser, Gasgeruch oder Stromschlaggefahr: SOFORT auf Notdienst-Hotline +49 40 555-0100 verweisen und nicht weiter beraten.",
+    "Niemals Versicherungsdeckung zusagen oder ablehnen — das entscheidet die Versicherung, nicht der Handwerker.",
+    "Niemals exakte Anfahrtszeiten versprechen ('in 30 Minuten da'). Stattdessen Spannen nennen, die der Disponent telefonisch bestätigt.",
+    "Keine DIY-Reparaturanleitungen geben, auch wenn der Nutzer fragt. Wir sind kein YouTube-Kanal.",
+    "Keine medizinischen Hinweise zu Schimmel oder Wasserqualität geben — bei Verdacht auf Gesundheitsgefährdung an Hausarzt oder Gesundheitsamt verweisen."
+  ],
+
+  "lead_capture": {
+    "trigger_intents": [
+      "termin", "rückruf", "anfrage", "kostenvoranschlag", "angebot",
+      "notdienst", "wasserschaden", "rohrbruch", "verstopft", "kaputt",
+      "appointment", "callback", "estimate", "emergency", "leak"
+    ],
+    "fields": [
+      { "key": "name",     "label": "Ihr Name",                                "required": true  },
+      { "key": "phone",    "label": "Telefonnummer für Rückruf",               "required": true  },
+      { "key": "address",  "label": "Einsatzadresse (Straße + PLZ Hamburg)",   "required": true  },
+      { "key": "problem",  "label": "Was ist passiert? (Stichwort genügt)",    "required": false },
+      { "key": "urgency",  "label": "Wie dringend? (jetzt / heute / Termin)",  "required": false }
+    ],
+    "webhook_url": "https://hooks.zapier.com/hooks/catch/REPLACE_ME/nordlicht-sanitaer",
+    "confirmation_message": "Vielen Dank — ich habe Ihre Anfrage notiert. Bei Notfällen ruft Sie unser Disponent innerhalb von 15 Minuten zurück, ansonsten am nächsten Werktag bis 10 Uhr. Wenn es jetzt akut ist, wählen Sie bitte direkt unsere Notfall-Hotline +49 40 555-0100."
+  },
+
+  "theme": {
+    "tokens": {
+      "--ena-bg":               "#FFFFFF",
+      "--ena-surface":          "#F1F5F9",
+      "--ena-text":             "#0F172A",
+      "--ena-text-muted":       "#64748B",
+
+      "--ena-primary":          "#1E3A5F",
+      "--ena-primary-contrast": "#FFFFFF",
+      "--ena-accent":           "#F59E0B",
+
+      "--ena-bubble-user-bg":   "#1E3A5F",
+      "--ena-bubble-user-text": "#FFFFFF",
+      "--ena-bubble-bot-bg":    "#F1F5F9",
+      "--ena-bubble-bot-text":  "#0F172A",
+
+      "--ena-border-color":     "#CBD5E1",
+      "--ena-border-width":     "1px",
+      "--ena-border-radius":    "12px",
+      "--ena-bubble-radius":    "10px",
+
+      "--ena-launcher-bg":      "#1E3A5F",
+      "--ena-launcher-icon":    "#F59E0B",
+      "--ena-shadow":           "0 12px 36px rgba(30, 58, 95, 0.30)",
+
+      "--ena-font":             "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      "--ena-font-size":        "14px"
+    }
+  },
+
+  "llm": {
+    "temperature": 0.3,
+    "max_tokens": 500
+  }
+}
