@@ -7,4 +7,5 @@ const c = document.createElement('ena-chat');
 c.setAttribute('customer', 'acme-dental');
 c.setAttribute('base-url', 'http://localhost:1234/v1');
 c.setAttribute('model', 'qwen/qwen3-4b-2507');
+c.setAttribute('api-key', 'lm-studio');
 document.body.appendChild(c);
