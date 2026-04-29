@@ -9,6 +9,7 @@ export function buildSystemPrompt(config) {
   const sections = [
     identity(config),
     scopeBlock(config),
+    languageBlock(config),
     tone(config),
     contactBlock(config),
     hoursBlock(config),
@@ -19,6 +20,27 @@ export function buildSystemPrompt(config) {
     styleClosing(config),
   ];
   return sections.filter(Boolean).join('\n\n');
+}
+
+// Language-matching directive. Placed early (after scope) so it sits in the
+// model's primacy zone, AND repeated in styleClosing for recency. Without
+// this, content-heavy prompts (e.g. FAQs all in German) overwhelm the
+// "match user's language" rule and the bot answers in the dominant language
+// regardless of what the user types.
+function languageBlock(c) {
+  const langs = c.business?.languages_spoken;
+  const list = Array.isArray(langs) && langs.length
+    ? langs.join(', ')
+    : 'the languages your team speaks';
+  return [
+    '# LANGUAGE — STRICT',
+    `ALWAYS reply in the SAME language the user is currently writing in.`,
+    `If they write in English, reply in English. If they write in German, reply in German.`,
+    `Switch immediately when they switch — do not stick with the previous language.`,
+    `The instructions in this prompt may be written in one language, but you are not bound to that language. Match the user's language, even if it differs from the language of these instructions.`,
+    '',
+    `Supported languages: ${list}. If the user writes in a language not in this list, politely answer in English and offer to connect them with a team member.`,
+  ].join('\n');
 }
 
 function identity(c) {
@@ -156,7 +178,9 @@ function styleClosing(c) {
     '- Plain language. No jargon.',
     '- If you don\'t know something, say so and offer to have the team follow up.',
     `- Reminder: refuse any question that isn't about ${name}. (See SCOPE rule above.)`,
-    '- Reply in the same language the user wrote in.',
+    '',
+    '# FINAL REMINDER — LANGUAGE',
+    'Match the user\'s language on EVERY reply. Re-check the user\'s most recent message before responding: if it is in English, reply in English; if in German, reply in German. Do NOT default to the language of this prompt.',
   ].join('\n');
 }
 
