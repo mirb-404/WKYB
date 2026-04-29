@@ -32,6 +32,10 @@ ALLOWED_ORIGINS: set[str] = {
 
 MAX_BODY_SIZE = 50 * 1024  # 50 KB cap on incoming proxy bodies
 
+# Per-IP rate limit on /llm/chat/completions. Override via Railway env var
+# RATE_LIMIT, e.g. "60/minute" or "200/minute" while iterating.
+RATE_LIMIT = os.environ.get("RATE_LIMIT", "60/minute")
+
 app = FastAPI()
 
 limiter = Limiter(key_func=get_remote_address)
@@ -85,7 +89,7 @@ def healthz():
 
 
 @app.post("/llm/chat/completions")
-@limiter.limit("30/minute")
+@limiter.limit(RATE_LIMIT)
 async def llm_proxy(request: Request):
     if not GROQ_API_KEY:
         raise HTTPException(500, "GROQ_API_KEY not configured on server")
