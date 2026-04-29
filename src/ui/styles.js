@@ -44,6 +44,26 @@ export const styles = /* css */ `
     font-family: var(--ena-font);
     font-size: var(--ena-font-size);
     color: var(--ena-text);
+
+    /* Defensive: host pages often have global rules (* { border: ... },
+       button outlines, body * resets) that paint onto our host element.
+       Shadow DOM isolates the inside of the widget but not the element
+       itself, so we neutralize the common offenders here. */
+    display: block !important;
+    border: 0 !important;
+    outline: 0 !important;
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+
+  :host::before, :host::after {
+    content: none !important;
+    display: none !important;
   }
 
   *, *::before, *::after { box-sizing: border-box; }
