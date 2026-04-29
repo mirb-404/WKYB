@@ -96,10 +96,23 @@ export class ChatEngine extends EventTarget {
     }
   }
 
+  // Send the system prompt + last N user/assistant turns to the LLM.
+  // Caps cost at long conversations and keeps the system prompt close to
+  // the latest user message — small models lose attention on rules that
+  // sit far from the end of context. 10 turns ≈ 5 user-assistant pairs,
+  // enough for natural follow-ups without the bot forgetting its scope.
   _payloadMessages() {
-    return this.messages
-      .filter(m => !m.error && (m.role !== 'assistant' || m.content))
-      .map(({ role, content }) => ({ role, content }));
+    const HISTORY_TURNS = 10;
+    const valid = this.messages.filter(
+      m => !m.error && (m.role !== 'assistant' || m.content)
+    );
+    const system = valid.filter(m => m.role === 'system');
+    const turns  = valid.filter(m => m.role !== 'system').slice(-HISTORY_TURNS);
+    // Drop any leading assistant message so the trimmed history starts
+    // with a user turn — some models get confused by an "orphan" assistant
+    // turn at the start of context with no preceding user message.
+    while (turns.length && turns[0].role !== 'user') turns.shift();
+    return [...system, ...turns].map(({ role, content }) => ({ role, content }));
   }
 
   _emit(type, detail) {

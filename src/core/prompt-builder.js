@@ -65,9 +65,9 @@ function contactBlock(c) {
 function hoursBlock(c) {
   const h = c.business?.hours;
   if (!h || typeof h !== 'object') return null;
-  const lines = Object.entries(h).map(
-    ([day, time]) => `- ${cap(day)}: ${time}`
-  );
+  const lines = Object.entries(h)
+    .filter(([_, time]) => time != null && String(time).trim())
+    .map(([day, time]) => `- ${cap(day)}: ${time}`);
   return lines.length ? `# Hours\n${lines.join('\n')}` : null;
 }
 

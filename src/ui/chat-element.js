@@ -240,9 +240,29 @@ export class EnaChat extends HTMLElement {
     if (empty) empty.remove();
     const err = document.createElement('div');
     err.className = 'bubble error';
-    err.textContent = error === 'cancelled' ? 'Cancelled.' : `Error: ${error}`;
+    err.textContent = this._friendlyError(error);
     this._messagesEl.appendChild(err);
     this._scrollToBottom();
+  }
+
+  // Map raw adapter/proxy error strings to user-facing copy. End-users
+  // shouldn't see raw HTTP codes or upstream tracebacks.
+  _friendlyError(error) {
+    if (error === 'cancelled') return 'Cancelled.';
+    const s = String(error || '');
+    if (/\b429\b|rate.?limit/i.test(s)) {
+      return "We're briefly busy — please try again in a few seconds.";
+    }
+    if (/\bHTTP 5\d\d\b|\b5\d\d\b/.test(s)) {
+      return "Sorry, our assistant is briefly unavailable. Please try again, or call us if it's urgent.";
+    }
+    if (/network|unreachable|connection/i.test(s)) {
+      return "Connection issue — please check your internet and try again.";
+    }
+    if (/no adapter/i.test(s)) {
+      return "Chat is not configured. Please refresh the page.";
+    }
+    return `Error: ${s}`;
   }
 
   _scrollToBottom() {
@@ -358,13 +378,19 @@ export class EnaChat extends HTMLElement {
   }
 
   // ─── Theming ───────────────────────────────────────────────────
-  // Tracks the latest call so a slow fetch from a previous theme switch
-  // can't overwrite the tokens of a newer one.
+  // All themes (including built-ins) live as JSON in src/themes/ — single
+  // source of truth. Tracks the latest call so a slow fetch from a previous
+  // theme switch can't overwrite the tokens of a newer one.
   async _applyTheme(name) {
     if (!name) return;
+    const normalized = String(name).toLowerCase();
+    if (!/^[a-z0-9_-]+$/.test(normalized)) {
+      console.warn('[ena-chat] invalid theme name:', name);
+      return;
+    }
     const token = ++this._themeToken;
     try {
-      const theme = BUILTIN_THEMES[name] ?? await this._fetchTheme(name);
+      const theme = await this._fetchTheme(normalized);
       if (token !== this._themeToken) return; // a newer theme switch superseded us
       if (!theme) return;
       this._writeTokens(theme.tokens || {});
@@ -375,7 +401,6 @@ export class EnaChat extends HTMLElement {
   }
 
   async _fetchTheme(name) {
-    if (!/^[a-z0-9_-]+$/i.test(name)) return null; // guard against bad URLs
     const res = await fetch(new URL(`${name}.json`, THEME_BASE));
     if (!res.ok) return null;
     return res.json();
@@ -399,69 +424,6 @@ export class EnaChat extends HTMLElement {
     this._adapter.update(update);
   }
 }
-
-// Built-in themes ship with the component so the basics work offline.
-// External themes are loaded via fetch from src/themes/<name>.json.
-const BUILTIN_THEMES = {
-  enadyne: {
-    title: 'enaDyne Assistant',
-    tokens: {
-      '--ena-bg': '#ffffff',
-      '--ena-surface': '#E8EEF2',
-      '--ena-text': '#2A2E32',
-      '--ena-text-muted': '#808080',
-      '--ena-primary': '#019875',
-      '--ena-accent': '#1EE280',
-      '--ena-bubble-user-bg': '#019875',
-      '--ena-bubble-user-text': '#ffffff',
-      '--ena-bubble-bot-bg': '#E8EEF2',
-      '--ena-bubble-bot-text': '#2A2E32',
-      '--ena-border-color': '#E8EEF2',
-      '--ena-launcher-bg': '#019875',
-      '--ena-shadow': '0 16px 48px rgba(1, 152, 117, 0.25)',
-    },
-  },
-  dark: {
-    title: 'Assistant',
-    tokens: {
-      '--ena-bg': '#1a1d21',
-      '--ena-surface': '#22262b',
-      '--ena-text': '#e8eef2',
-      '--ena-text-muted': '#8a939c',
-      '--ena-primary': '#1EE280',
-      '--ena-accent': '#019875',
-      '--ena-bubble-user-bg': '#1EE280',
-      '--ena-bubble-user-text': '#0d0d0d',
-      '--ena-bubble-bot-bg': '#2c3035',
-      '--ena-bubble-bot-text': '#e8eef2',
-      '--ena-border-color': '#2c3035',
-      '--ena-launcher-bg': '#1EE280',
-      '--ena-launcher-icon': '#0d0d0d',
-      '--ena-shadow': '0 20px 60px rgba(0, 0, 0, 0.5)',
-    },
-  },
-  glass: {
-    title: 'Assistant',
-    tokens: {
-      '--ena-bg': 'rgba(255, 255, 255, 0.55)',
-      '--ena-surface': 'rgba(255, 255, 255, 0.35)',
-      '--ena-backdrop': 'blur(18px) saturate(140%)',
-      '--ena-text': '#1a1d21',
-      '--ena-text-muted': '#5a6470',
-      '--ena-primary': '#019875',
-      '--ena-accent': '#1EE280',
-      '--ena-bubble-user-bg': 'rgba(1, 152, 117, 0.92)',
-      '--ena-bubble-user-text': '#ffffff',
-      '--ena-bubble-bot-bg': 'rgba(255, 255, 255, 0.7)',
-      '--ena-bubble-bot-text': '#1a1d21',
-      '--ena-border-color': 'rgba(255, 255, 255, 0.4)',
-      '--ena-border-width': '1px',
-      '--ena-border-radius': '20px',
-      '--ena-launcher-bg': 'rgba(1, 152, 117, 0.92)',
-      '--ena-shadow': '0 20px 60px rgba(20, 30, 40, 0.25)',
-    },
-  },
-};
 
 if (!customElements.get('ena-chat')) {
   customElements.define('ena-chat', EnaChat);

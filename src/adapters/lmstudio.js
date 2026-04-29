@@ -6,6 +6,13 @@
 //
 // Native endpoint is non-streaming, so we emit the full response as a
 // single onToken() call to keep the UI behavior consistent.
+//
+// ⚠ DEV-ONLY. This adapter targets LM Studio's local server, which by
+// definition runs on the developer's machine. It is NOT suitable for
+// production deployments — every visitor's browser would attempt to reach
+// `localhost`, which is *their* device, not yours. For production, route
+// through the FastAPI proxy in main.py and use QwenAdapter against a
+// public LLM endpoint (Groq, OpenRouter, DashScope, etc.).
 
 export class LMStudioAdapter {
   constructor({ baseUrl, model } = {}) {
