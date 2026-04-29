@@ -6,6 +6,7 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.middleware.base import BaseHTTPMiddleware
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 GROQ_BASE_URL = "https://api.groq.com/openai/v1"
@@ -23,6 +24,28 @@ app.add_middleware(
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
+
+
+class CacheControlMiddleware(BaseHTTPMiddleware):
+    """Set explicit Cache-Control on static responses.
+
+    Customer JSONs change often during onboarding — must revalidate every
+    request so client edits propagate within seconds. Other static files
+    (chat-element.js, themes) get a short cache so onboarding edits still
+    propagate fast without hammering Railway on every page load.
+    """
+
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        path = request.url.path
+        if path.startswith("/src/customers/"):
+            response.headers["Cache-Control"] = "no-cache, must-revalidate"
+        elif path.startswith("/src/"):
+            response.headers["Cache-Control"] = "public, max-age=300"
+        return response
+
+
+app.add_middleware(CacheControlMiddleware)
 
 app.mount("/src", StaticFiles(directory="src"), name="src")
 
