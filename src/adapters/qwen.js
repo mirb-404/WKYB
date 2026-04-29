@@ -24,21 +24,20 @@ export class QwenAdapter {
   }
 
   async send(messages, { signal, onToken } = {}) {
-    if (!this.apiKey) throw new Error('Missing API key');
     if (!Array.isArray(messages) || messages.length === 0) {
       throw new Error('No messages to send');
     }
     if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+
+    const headers = { 'Content-Type': 'application/json' };
+    if (this.apiKey) headers.Authorization = `Bearer ${this.apiKey}`;
 
     let res;
     try {
       res = await fetch(`${this.baseUrl}/chat/completions`, {
         method: 'POST',
         signal,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${this.apiKey}`,
-        },
+        headers,
         body: JSON.stringify({
           model: this.model,
           messages,
