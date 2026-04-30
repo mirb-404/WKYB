@@ -37,11 +37,15 @@ export class EnaChat extends HTMLElement {
     this._engine.addEventListener('message', e => {
       this._appendMessage(e.detail);
       if (e.detail.role === 'assistant') this._setBusy(true);
+      // Save user messages immediately (assistant messages are partial here
+      // and will be saved on 'complete' instead).
+      if (e.detail.role === 'user') this._saveSession();
     });
     this._engine.addEventListener('token', e => this._updateMessage(e.detail));
     this._engine.addEventListener('complete', e => {
       this._finalizeMessage(e.detail);
       this._setBusy(false);
+      this._saveSession();
     });
     this._engine.addEventListener('error', e => {
       this._showError(e.detail);
@@ -50,6 +54,10 @@ export class EnaChat extends HTMLElement {
     this._engine.addEventListener('reset', () => {
       this._renderMessagesEmpty();
       this._setBusy(false);
+      // Restore is intentionally NOT triggered here — it would mis-fire on
+      // customer-unload (restoring the unrelated default session) and on
+      // user-initiated reset(). Restore is triggered explicitly from
+      // _applyCustomerConfig (post-load) and connectedCallback (standalone).
     });
 
     this._themeToken = 0;
@@ -63,6 +71,13 @@ export class EnaChat extends HTMLElement {
   connectedCallback() {
     this._applyTheme(this.getAttribute('theme') || 'enadyne');
     this._syncAdapterFromAttrs();
+    // Standalone restore: if there's no customer or system-prompt that
+    // would trigger a future engine.reset, restore here. Otherwise wait
+    // for the 'reset' event handler to do it (so customer's system prompt
+    // is in place before history is restored).
+    if (!this.hasAttribute('customer') && !this.hasAttribute('system-prompt')) {
+      this._restoreSession();
+    }
   }
 
   attributeChangedCallback(name, _old, value) {
@@ -75,15 +90,37 @@ export class EnaChat extends HTMLElement {
     }
     if (name === 'system-prompt') this._engine.reset(value || null);
     if (name === 'customer') {
-      if (value) this._loadCustomer(value);
-      else this._unloadCustomer();
+      if (value) {
+        // Synchronously tear down any in-flight stream BEFORE the new
+        // customer JSON is fetched. Without this, a bot reply finishing
+        // mid-switch would call _saveSession with the new customer's
+        // storage key, leaking content across customers.
+        this._engine.reset(null);
+        this._loadCustomer(value);
+      } else {
+        this._unloadCustomer();
+      }
     }
   }
 
   // ─── Public API ────────────────────────────────────────────────
-  open() { this._panel.hidden = false; this._launcher.hidden = true; this._textarea?.focus(); }
-  close() { this._panel.hidden = true; this._launcher.hidden = false; }
-  reset() { this._engine.reset(this.getAttribute('system-prompt') || null); }
+  open() {
+    this._panel.hidden = false;
+    this._launcher.hidden = true;
+    this._textarea?.focus();
+    this._saveSession();
+  }
+  close() {
+    this._panel.hidden = true;
+    this._launcher.hidden = false;
+    this._saveSession();
+  }
+  reset() {
+    // User-initiated clear: wipe storage first so the post-reset restore
+    // finds nothing to bring back.
+    try { sessionStorage.removeItem(this._storageKey); } catch { /* ignore */ }
+    this._engine.reset(this.getAttribute('system-prompt') || null);
+  }
   registerAdapter(adapter) {
     if (!adapter || typeof adapter.send !== 'function') {
       console.warn('[ena-chat] registerAdapter: adapter must expose send()');
@@ -354,6 +391,11 @@ export class EnaChat extends HTMLElement {
     const prompt = buildSystemPrompt(config);
     this._engine.reset(prompt || null);
 
+    // Restore any persisted history for this specific customer. Triggered
+    // explicitly here (not from the engine 'reset' event) so unload and
+    // user-initiated resets don't accidentally restore unrelated history.
+    this._restoreSession();
+
     this._applyAdapterExtras(config);
   }
 
@@ -374,6 +416,70 @@ export class EnaChat extends HTMLElement {
     for (let i = this.style.length - 1; i >= 0; i--) {
       const prop = this.style[i];
       if (prop && prop.startsWith('--ena-')) this.style.removeProperty(prop);
+    }
+  }
+
+  // ─── Session persistence ───────────────────────────────────────
+  // sessionStorage scope: same browser tab, cleared on tab close. Survives
+  // page navigations within the tab — the use case we want. Keyed by
+  // customer slug so different customers' histories don't mix when the
+  // demo page switches between them.
+  get _storageKey() {
+    const customer = this.getAttribute('customer') || '_default';
+    return `ena-chat-state-${customer}`;
+  }
+
+  _saveSession() {
+    if (!this._engine || !this._panel) return;
+    try {
+      // Only persist user/assistant messages with stable content. System
+      // messages are rebuilt from customer JSON each load. Streaming
+      // assistant messages (empty content) are filtered out.
+      const messages = this._engine.messages
+        .filter(m =>
+          (m.role === 'user' || m.role === 'assistant')
+          && !m.error
+          && (m.role !== 'assistant' || m.content)
+        )
+        .map(({ role, content }) => ({ role, content }));
+      const state = { messages, open: !this._panel.hidden };
+      sessionStorage.setItem(this._storageKey, JSON.stringify(state));
+    } catch { /* private mode / quota — ignore */ }
+  }
+
+  _restoreSession() {
+    let state;
+    try {
+      const raw = sessionStorage.getItem(this._storageKey);
+      if (!raw) return;
+      state = JSON.parse(raw);
+    } catch { return; }
+    if (!state || typeof state !== 'object') return;
+
+    // Replay persisted messages: push into engine state, render bubbles.
+    // Generate fresh IDs since the old DOM is gone and engine.messages
+    // tracks `id` via cryptoId in send(), but persisted messages don't
+    // need to round-trip through send().
+    if (Array.isArray(state.messages) && state.messages.length) {
+      for (const m of state.messages) {
+        if (m.role !== 'user' && m.role !== 'assistant') continue;
+        if (typeof m.content !== 'string' || !m.content.trim()) continue;
+        const restored = {
+          role: m.role,
+          content: m.content,
+          id: globalThis.crypto?.randomUUID?.()
+            ?? 'r-' + Math.random().toString(36).slice(2, 10),
+        };
+        this._engine.messages.push(restored);
+        this._appendMessage(restored);
+      }
+    }
+
+    // Restore panel open/closed state (default to closed for first-time
+    // visitors who never opened the chat).
+    if (state.open) {
+      this._panel.hidden = false;
+      this._launcher.hidden = true;
     }
   }
 
