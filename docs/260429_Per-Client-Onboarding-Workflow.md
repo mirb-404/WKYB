@@ -4,6 +4,8 @@ How to take a new client from "intake form complete" to "snippet on their live s
 
 Companion to [Client Data Intake](260429_Client-Data-Intake.md) — that doc covers *what* to collect; this one covers *what to do with it*.
 
+For non-German or non-EU clients, also consult [International Client Considerations](260429_International-Client-Considerations.md) — it lists the additional dimensions (UI translation, timezone, server location, RTL, per-jurisdiction compliance) that surface beyond the German baseline.
+
 ---
 
 ## How "different per client" works under the hood

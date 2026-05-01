@@ -146,5 +146,9 @@
   "llm": {
     "temperature": 0.3,
     "max_tokens": 500
+  },
+
+  "behavior": {
+    "persist_open": false
   }
 }

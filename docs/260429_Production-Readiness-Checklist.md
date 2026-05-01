@@ -443,7 +443,7 @@ Don't ship and forget. The first month is when problems surface.
 - **Pricing** — depends on your business model, not technical readiness.
 - **Multi-tenancy isolation** — your current architecture is shared (one proxy, one Groq key for all clients). Acceptable for SMB scale. If you onboard a healthcare or legal client demanding isolation, that's a custom enterprise tier and a separate document.
 - **Self-hosted LLM migration** — only relevant once cloud cost > €500/month. Defer.
-- **Multi-language UI** — the widget UI is English-only (composer placeholder, error messages). For German clients you may want to translate. Track as a future enhancement, not a blocker.
+- **Multi-language UI, RTL layout, non-EU compliance, per-region deployment** — covered in [International Client Considerations](260429_International-Client-Considerations.md). These are not launch blockers for a German first client; they become relevant as you expand beyond the EU/non-English markets.
 
 ---
 

@@ -475,9 +475,12 @@ export class EnaChat extends HTMLElement {
       }
     }
 
-    // Restore panel open/closed state (default to closed for first-time
-    // visitors who never opened the chat).
-    if (state.open) {
+    // Restore panel open/closed state — opt-out per customer via
+    // `behavior.persist_open: false` in the customer JSON. Default true
+    // (more engaged UX: chat follows the user across pages within a tab).
+    // Default to closed for first-time visitors who never opened the chat.
+    const persistOpen = this._lastCustomerConfig?.behavior?.persist_open !== false;
+    if (persistOpen && state.open) {
       this._panel.hidden = false;
       this._launcher.hidden = true;
     }
